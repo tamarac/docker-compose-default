@@ -1,0 +1,46 @@
+version: '2'
+
+services:
+  web:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80" # you need to see if this port isnt used. Remember, your port is in the left of the two points.
+    volumes:
+      - ./:/folder_name
+      - ./docker/nginx/site.conf:/etc/nginx/conf.d/site.conf
+    links:
+      - php
+
+  php:
+    build: ./docker/php-fpm-mongo
+    container_name: php
+    volumes: # It is necessary the two line of the volumes, the primary is folder where you CODE is it, the secound where you PHP is it.
+      - ./:/folder_name
+      - ./:/var/www/html
+    links:
+      - db
+
+  db:
+    container_name: mongodb
+    image: mongo
+    environment:
+      MONGO_INITDB_DATABASE: database_name
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+
+  mongo-express:
+    container_name: mongoexpress
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081 # you need to see if this port isnt used. Remember, your port is in the left of the two points.
+    environment:
+      ME_CONFIG_MONGODB_SERVER: db
+      ME_CONFIG_MONGODB_AUTH_USERNAME: root
+      ME_CONFIG_MONGODB_AUTH_PASSWORD: password
+      ME_CONFIG_MONGODB_PORT: 27017
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: password
+    links:
+      - db

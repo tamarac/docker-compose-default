@@ -1,0 +1,41 @@
+version: '2'
+
+services:
+  web:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80" # you need to see if this port isnt used. Remember, your port is in the left of the two points.
+    volumes:
+      - ./:/folder_name
+      - ./docker/nginx/site.conf:/etc/nginx/conf.d/site.conf
+    links:
+      - php
+
+  php:
+    build: ./docker/php-fpm
+    container_name: php
+    volumes: # It is necessary the two line of the volumes, the primary is folder where you CODE is it, the secound where you PHP is it.
+      - ./:/folder_name
+      - ./:/var/www/html
+    links:
+      - db
+
+  db:
+    image: mysql
+    container_name: mysql
+    ports:
+      - "3306:3306" # you need to see if this port isnt used. Remember, your port is in the left of the two points.
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_DATABASE: database_name
+      MYSQL_USER: root
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
+        
+  redis:
+    image: redis:alpine
+    container_name: test-redis
+    volumes:
+      - ./:/data
