@@ -1,0 +1,15 @@
+version: "3.9"
+services:
+  lambda.p2m.dev:
+    build: .
+    command: python main.py
+    volumes: 
+      - .:/code
+    ports:
+      - "8000:8000"
+    networks:
+        - bubble
+
+networks:
+    bubble:
+        external: true
