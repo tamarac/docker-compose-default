@@ -5,7 +5,7 @@ This repository have a little code to docker-compose php with mongo db and mysql
 
 ### Details
 
-- `docker-compose.yml` - php 7.4 (pdo_mysql) needed php-fpm/DockerFile, mysql, nginx:latest, redis. 
+- `docker-compose.yml` - php 8.1 (pdo_mysql) needed php-fpm/DockerFile, mysql, nginx:latest, redis. 
 - `docker-compose-mongo.yml` - php 7.3 (pdo_mongodb) needed php-fpm-mongo/DockerFile, mongodb, nginx:latest, mongo-express. 
 
 ### Files
